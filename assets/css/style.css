@@ -32,8 +32,6 @@ main {margin-top: .75rem;}
   left: 0;
 }
 
-.city-selector header {}
-
 .city-selector button {
   background-color: #5AA2E9;
   color: #DEECEB;
@@ -44,12 +42,12 @@ main {margin-top: .75rem;}
 .current {
   border: 2px solid var(--border-color);
   padding: .5rem;
+  background-color: #2174c1;
+  color: #FBFBFC;
 }
 
-.five-day-forcast {}
-
 .forcast-card {
-  background-color: #33475A;
+  background-color: #2174c1;
   color: #FBFBFC;
   gap: .5rem;
   padding-bottom: 1.25rem;

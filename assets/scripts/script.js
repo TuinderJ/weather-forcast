@@ -4,7 +4,7 @@ function getLatLonFromCity(e) {
   e.preventDefault();
   let city = document.getElementById("city-input").value.trim();
   let displayedForcast = [];
-  fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${openWeatherAPIKey}`)
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${openWeatherAPIKey}`)
     .then(response => {
       if (response.status === 404) return alert("Sorry, something went wrong. Please check your spelling any try agian.");
       makeNewHistoryButton();
@@ -12,7 +12,7 @@ function getLatLonFromCity(e) {
     })
     .then(data => {
       if (data.status === 404) return;
-      // console.log(data);
+      console.log(data);
       for (let i = 0; i < data.list.length; i++) {
         let newForcast = {
           city: data.city.name,
@@ -22,6 +22,7 @@ function getLatLonFromCity(e) {
           wind: data.list[i].wind.speed,
           humidity: data.list[i].main.humidity,
           icon: data.list[i].weather[0].icon,
+          iconDescription: data.list[i].weather[0].description,
         };
         displayedForcast.push(newForcast);
       }
@@ -34,19 +35,26 @@ function displayForcast(data) {
   console.log(data);
   console.log(data[0]);
   const current = document.getElementById("current");
-  current.children[0].innerText = `${data[0].city} (${data[0].date})`;
-  current.children[1].children[0].innerText = data[0].temp;
-  current.children[2].children[0].innerText = data[0].wind;
-  current.children[3].children[0].innerText = data[0].humidity;
-  // current.children[3].children[0].innerText = data[0].uvIndex;
+  current.children[0].textContent = `${data[0].city} (${data[0].date}) `;
+  const icon = document.createElement("img");
+  icon.setAttribute("src", `https://openweathermap.org/img/wn/${data[0].icon}@2x.png`);
+  icon.setAttribute("alt", data[0].iconDescription);
+  icon.setAttribute("class", "icon");
+  current.children[0].appendChild(icon);
+  current.children[1].children[0].textContent = data[0].temp;
+  current.children[2].children[0].textContent = data[0].wind;
+  current.children[3].children[0].textContent = data[0].humidity;
+  // current.children[3].children[0].textContent = data[0].uvIndex;
 
   const fiveDayContainer = document.getElementById("five-day-container");
-  console.log(fiveDayContainer);
+  // console.log(fiveDayContainer);
   let found = 0;
   for (let i = 0; i < data.length; i++) {
     const forcast = data[i];
     if (forcast.hour == 12) {
       fiveDayContainer.children[found].children[0].textContent = forcast.date;
+      fiveDayContainer.children[found].children[1].setAttribute("src", `https://openweathermap.org/img/wn/${forcast.icon}@2x.png`);
+      fiveDayContainer.children[found].children[1].setAttribute("alt", forcast.iconDescription);
       fiveDayContainer.children[found].children[2].children[0].textContent = forcast.temp;
       fiveDayContainer.children[found].children[3].children[0].textContent = forcast.wind;
       fiveDayContainer.children[found].children[4].children[0].textContent = forcast.humidity;
