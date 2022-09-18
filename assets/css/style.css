@@ -1,0 +1,61 @@
+:root {
+  --border-color: #979797;
+}
+
+h1 {
+  font-size: 225%;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.header {
+  padding: 1rem;
+  background-image: linear-gradient(to right, #55f, #005);
+}
+
+main {margin-top: .75rem;}
+
+.city-selector form {
+  gap: .75rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.city-selector form::after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background-color: var(--border-color);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.city-selector header {}
+
+.city-selector button {
+  background-color: #5AA2E9;
+  color: #DEECEB;
+  border: none;
+  border-radius: 5px;
+}
+
+.current {
+  border: 2px solid var(--border-color);
+  padding: .5rem;
+}
+
+.five-day-forcast {}
+
+.forcast-card {
+  background-color: #33475A;
+  color: #FBFBFC;
+  gap: .5rem;
+  padding-bottom: 1.25rem;
+}
+
+.icon {
+  width: 4rem;
+  margin: -1rem;
+}
