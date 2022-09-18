@@ -57,3 +57,13 @@ main {margin-top: .75rem;}
   width: 4rem;
   margin: -1rem;
 }
+
+.history {
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.history button {
+  background-color: #B7B7B7;
+  color: black;
+}

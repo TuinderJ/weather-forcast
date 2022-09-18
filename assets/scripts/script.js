@@ -1,18 +1,18 @@
 const openWeatherAPIKey = "ea6c8cd00aec5e85a67ae6194df79aac";
 
-function getLatLonFromCity(e) {
+function getForcastData(e) {
   e.preventDefault();
   let city = document.getElementById("city-input").value.trim();
   let displayedForcast = [];
   fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${openWeatherAPIKey}`)
     .then(response => {
       if (response.status === 404) return alert("Sorry, something went wrong. Please check your spelling any try agian.");
-      makeNewHistoryButton();
       return response.json();
     })
     .then(data => {
       if (data.status === 404) return;
-      console.log(data);
+      makeNewHistoryButton(data.city.name);
+      // console.log(data);
       for (let i = 0; i < data.list.length; i++) {
         let newForcast = {
           city: data.city.name,
@@ -32,8 +32,8 @@ function getLatLonFromCity(e) {
 }
 
 function displayForcast(data) {
-  console.log(data);
-  console.log(data[0]);
+  // console.log(data);
+  // console.log(data[0]);
   const current = document.getElementById("current");
   current.children[0].textContent = `${data[0].city} (${data[0].date}) `;
   const icon = document.createElement("img");
@@ -63,6 +63,16 @@ function displayForcast(data) {
   }
 }
 
-function makeNewHistoryButton() {}
+function makeNewHistoryButton(city) {
+  const history = document.getElementById("history");
+  for (let i = 0; i < history.children.length; i++) {
+    const button = history.children[i];
+    if (button.textContent === city) return;
+  }
+  if (history.children.length >= 8) history.children[history.children.length - 1].remove();
+  const newHistoryButton = document.createElement("button");
+  newHistoryButton.textContent = city;
+  history.prepend(newHistoryButton);
+}
 
-document.getElementById("search-button").addEventListener("click", getLatLonFromCity);
+document.getElementById("search-button").addEventListener("click", getForcastData);
