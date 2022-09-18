@@ -1,8 +1,18 @@
 const openWeatherAPIKey = "ea6c8cd00aec5e85a67ae6194df79aac";
 
-function getForcastData(e) {
+function getForcastDataFromHistory(e) {
+  if (!e.target.matches("button")) return;
+  getForcastData(e.target.textContent);
+}
+
+function search(e) {
   e.preventDefault();
   let city = document.getElementById("city-input").value.trim();
+  if (city === "") return;
+  getForcastData(city);
+}
+
+function getForcastData(city) {
   let displayedForcast = [];
   fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${openWeatherAPIKey}`)
     .then(response => {
@@ -64,15 +74,36 @@ function displayForcast(data) {
 }
 
 function makeNewHistoryButton(city) {
+  let localHistory = [];
+  if (localStorage.getItem("history") !== null) localHistory = JSON.parse(localStorage.getItem("history"));
   const history = document.getElementById("history");
   for (let i = 0; i < history.children.length; i++) {
     const button = history.children[i];
     if (button.textContent === city) return;
   }
-  if (history.children.length >= 8) history.children[history.children.length - 1].remove();
+  if (localHistory.length >= 8) {
+    localHistory.pop();
+    history.children[history.children.length - 1].remove();
+  }
+  localHistory.unshift(city);
   const newHistoryButton = document.createElement("button");
   newHistoryButton.textContent = city;
   history.prepend(newHistoryButton);
+  localStorage.setItem("history", JSON.stringify(localHistory));
 }
 
-document.getElementById("search-button").addEventListener("click", getForcastData);
+function loadHistory() {
+  let localHistory = [];
+  if (localStorage.getItem("history") !== null) localHistory = JSON.parse(localStorage.getItem("history"));
+  const history = document.getElementById("history");
+  for (let i = 0; i < localHistory.length; i++) {
+    const city = localHistory[i];
+    newButton = document.createElement("button");
+    newButton.textContent = city;
+    history.appendChild(newButton);
+  }
+}
+
+document.getElementById("search-button").addEventListener("click", search);
+document.getElementById("history").addEventListener("click", getForcastDataFromHistory);
+loadHistory();
