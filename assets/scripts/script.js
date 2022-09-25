@@ -22,7 +22,6 @@ function getForcastData(city) {
     .then(data => {
       if (data.status === 404) return;
       makeNewHistoryButton(data.city.name);
-      // console.log(data);
       for (let i = 0; i < data.list.length; i++) {
         let newForcast = {
           city: data.city.name,
@@ -42,8 +41,6 @@ function getForcastData(city) {
 }
 
 function displayForcast(data) {
-  // console.log(data);
-  // console.log(data[0]);
   const current = document.getElementById("current");
   current.children[0].textContent = `${data[0].city} (${data[0].date}) `;
   const icon = document.createElement("img");
@@ -57,7 +54,6 @@ function displayForcast(data) {
   // current.children[3].children[0].textContent = data[0].uvIndex;
 
   const fiveDayContainer = document.getElementById("five-day-container");
-  // console.log(fiveDayContainer);
   let found = 0;
   for (let i = 0; i < data.length; i++) {
     const forcast = data[i];
